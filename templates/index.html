@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic Spam Chatbot</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .chat-container { border: 1px solid #ccc; padding: 10px; height: 400px; overflow-y: scroll; }
+        .chat-message { margin-bottom: 10px; }
+        .user-message { text-align: right; }
+        .bot-message { text-align: left; }
+        .input-container { display: flex; margin-top: 10px; }
+        #message-input { flex-grow: 1; padding: 5px; }
+        #send-button { padding: 5px 10px; }
+    </style>
+</head>
+<body>
+    <h1>Agentic Spam Chatbot</h1>
+    <p>Enter a message to see if it's spam or not. The bot will give you helpful advice.</p>
+    <div class="chat-container" id="chat-container"></div>
+    <div class="input-container">
+        <input type="text" id="message-input" placeholder="Type your message...">
+        <button id="send-button">Send</button>
+    </div>
+
+    <script>
+        const chatContainer = document.getElementById('chat-container');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+
+        sendButton.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
+            const message = messageInput.value;
+            if (!message) return;
+
+            appendMessage('user', message);
+            messageInput.value = '';
+
+            fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                appendMessage('bot', data.response);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                appendMessage('bot', 'Sorry, something went wrong.');
+            });
+        }
+
+        function appendMessage(sender, text) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('chat-message', sender + '-message');
+            messageElement.innerText = text;
+            chatContainer.appendChild(messageElement);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>

@@ -1,2 +1,8 @@
 pandas
 scikit-learn
+Flask
+langchain
+langchain-openai
+python-dotenv
+pytest
+pytest-flask
