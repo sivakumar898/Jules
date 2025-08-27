@@ -1,0 +1,49 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "prisma:generate": "./node_modules/.bin/prisma generate",
+    "prisma:migrate": "./node_modules/.bin/dotenv -e .env -- ./node_modules/.bin/prisma migrate dev",
+    "db:seed": "node prisma/seed.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sivakumar898/Jules.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sivakumar898/Jules/issues"
+  },
+  "homepage": "https://github.com/sivakumar898/Jules#readme",
+  "dependencies": {
+    "@prisma/client": "^6.15.0",
+    "@types/bcryptjs": "^2.4.6",
+    "bcryptjs": "^3.0.2",
+    "next": "^15.5.2",
+    "next-auth": "^4.24.11",
+    "next-themes": "^0.4.6",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "@types/react": "^19.1.11",
+    "autoprefixer": "^10.4.21",
+    "dotenv-cli": "^10.0.0",
+    "eslint": "^9.34.0",
+    "eslint-config-next": "^15.5.2",
+    "postcss": "^8.5.6",
+    "prisma": "^6.15.0",
+    "tailwindcss": "^4.1.12",
+    "typescript": "^5.9.2"
+  }
+}

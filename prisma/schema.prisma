@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// Admin user for the dashboard
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String // Hashed password
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Customer from contact form or CRM
+model Customer {
+  id                String    @id @default(cuid())
+  name              String
+  email             String    @unique
+  phone             String?
+  insuranceType     String? // From initial contact form
+  message           String? // From initial contact form
+  customerSource    String? // e.g., "Website", "Referral"
+  crossSellSource   String? // "Source for other products"
+  futureProspect    String? // "Prospect future"
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  policies        InsurancePolicy[]
+}
+
+// Insurance policy linked to a customer
+model InsurancePolicy {
+  id              String    @id @default(cuid())
+  policyNumber    String    @unique
+  policyType      String
+  premium         Float
+  startDate       DateTime
+  renewalDate     DateTime
+  renewalPeriod   String? // e.g., "Annual", "Monthly"
+  documentUrl     String?
+  customerId      String
+  customer        Customer  @relation(fields: [customerId], references: [id])
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+// Blog post for the blog page
+model BlogPost {
+  id          String    @id @default(cuid())
+  title       String
+  content     String
+  slug        String    @unique
+  published   Boolean   @default(false)
+  author      String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// Testimonial for the homepage
+model Testimonial {
+  id        String   @id @default(cuid())
+  quote     String
+  name      String
+  location  String?
+  visible   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
